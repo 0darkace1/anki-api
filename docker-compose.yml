@@ -1,0 +1,11 @@
+services:
+  anki-db_dev:
+    container_name: anki-db_dev
+    image: mongo:7.0.2-jammy
+    ports:
+      - 28017:27017
+    volumes:
+      - mysql-data:/data/db
+
+volumes:
+  mongodb-data:
