@@ -5,13 +5,13 @@ RUN apk --no-cache add curl
 # All deps stage
 FROM base as deps
 WORKDIR /app
-ADD package.json ./
+ADD package.json package-lock.json ./
 RUN npm ci
 
 # Production only deps stage
 FROM base as production-deps
 WORKDIR /app
-ADD package.json ./
+ADD package.json package-lock.json ./
 RUN npm ci --omit=dev
 RUN wget https://gobinaries.com/tj/node-prune --output-document - | /bin/sh && node-prune
 
