@@ -1,12 +1,12 @@
-ANKI APP CLONE API
-
-This is a tiny Anki Apps clone API made with EXPRESS & MONGODB
-
 <div align="center">
   <kbd>
     <img src="https://github.com/0darkace1/anki-app/blob/main/assets/images/icon.png?raw=true" width="150" height="150" />
   </kbd>
 </div>
+
+ANKI APP CLONE API
+
+This is a tiny Anki Apps clone API made with EXPRESS & MONGODB
 
 ## Description
 
