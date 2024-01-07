@@ -1,4 +1,11 @@
 services:
+  anki-api:
+    build:
+      context: .
+    environment:
+      NODE_ENV: production
+    ports:
+      - 9000:9000
   anki-db_dev:
     container_name: anki-db_dev
     image: mongo:7.0.2-jammy

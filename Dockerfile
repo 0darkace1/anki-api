@@ -1,35 +1,42 @@
-FROM node:18-alpine3.18 as base
+# syntax=docker/dockerfile:1
 
-RUN apk --no-cache add curl
+# Comments are provided throughout this file to help you get started.
+# If you need more help, visit the Dockerfile reference guide at
+# https://docs.docker.com/engine/reference/builder/
 
-# All deps stage
-FROM base as deps
-WORKDIR /app
-ADD package.json package-lock.json ./
-RUN npm ci
+ARG NODE_VERSION=18.19.0
 
-# Production only deps stage
-FROM base as production-deps
-WORKDIR /app
-ADD package.json package-lock.json ./
-RUN npm ci --omit=dev
-RUN wget https://gobinaries.com/tj/node-prune --output-document - | /bin/sh && node-prune
+FROM node:${NODE_VERSION}-alpine
 
-# Build stage
-FROM base as build
-WORKDIR /app
-COPY --from=deps /app/node_modules /app/node_modules
-ADD . .
+# Use production node environment by default.
+ENV NODE_ENV production
+
+
+WORKDIR /usr/src/app
+
+# Download dependencies as a separate step to take advantage of Docker's caching.
+# Leverage a cache mount to /root/.npm to speed up subsequent builds.
+# Leverage a bind mounts to package.json and package-lock.json to avoid having to copy them into
+# into this layer.
+RUN --mount=type=bind,source=package.json,target=package.json \
+    --mount=type=bind,source=package-lock.json,target=package-lock.json \
+    --mount=type=cache,target=/root/.npm \
+    npm ci --omit=dev
+
+# Run the application as a non-root user.
+USER node
+
+# Copy the rest of the source files into the image.
+COPY . .
+
+# Build the application
 RUN npm run build
 
-# Globally install PM2
+# Install PM2
 RUN npm i -g pm2
 
-# Production stage
-FROM base
-ENV NODE_ENV=production
-WORKDIR /app
-COPY --from=production-deps /app/node_modules /app/node_modules
-COPY --from=build /app/build /app
+# Expose the port that the application listens on.
 EXPOSE 9000
-CMD ["npm", "run", "pm2"]
+
+# Run the application.
+CMD npm run pm2
