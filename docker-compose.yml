@@ -3,6 +3,11 @@ services:
     build:
       context: .
     environment:
+      PORT: 9000
+      MONGO_URL: mongodb://anki-db_dev:27017/anki-clone
+      ACCESS_TOKEN_SECRET: mysupersecrettoken
+      REFRESH_TOKEN_SECRET: mysupersecrettoken2
+      SALT: mysupersecretsalt
       NODE_ENV: production
     ports:
       - 9000:9000
@@ -10,7 +15,7 @@ services:
     container_name: anki-db_dev
     image: mongo:7.0.2-jammy
     ports:
-      - 28017:27017
+      - 27017:27017
     volumes:
       - mysql-data:/data/db
 
