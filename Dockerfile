@@ -67,4 +67,4 @@ COPY --from=build /usr/src/app/build ./build
 EXPOSE 9000
 
 # Run the application.
-CMD yarn pm2
+CMD yarn start

@@ -3,7 +3,9 @@ export const setsData = [
     id: "65971bf211b1482496d19395",
     title: "Learn the capitals",
     description: "Learn the capitals of the world with this set!",
-    author: "Ali",
+    image:
+      "https://cdn.firstcry.com/education/2022/11/30100511/Countries-And-Their-Capitals-For-Kids.jpg",
+    author: "Admin",
     private: false,
     cards: 10,
   },
@@ -11,7 +13,9 @@ export const setsData = [
     id: "65971bf211b1482496d19397",
     title: "Learn Programming Languages",
     description: "Learn all the programming languages and acronyms!",
-    author: "Mehmet",
+    image:
+      "https://www.shutterstock.com/image-vector/vector-image-programming-language-logos-600w-2370541651.jpg",
+    author: "Admin",
     private: false,
     cards: 10,
   },
