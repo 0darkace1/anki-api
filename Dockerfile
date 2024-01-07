@@ -11,7 +11,7 @@ RUN npm ci
 # Production only deps stage
 FROM base as production-deps
 WORKDIR /app
-ADD package.json package-lock.json ./
+ADD package.json ./
 RUN npm ci --omit=dev
 RUN wget https://gobinaries.com/tj/node-prune --output-document - | /bin/sh && node-prune
 
@@ -21,6 +21,9 @@ WORKDIR /app
 COPY --from=deps /app/node_modules /app/node_modules
 ADD . .
 RUN npm run build
+
+# Globally install PM2
+RUN npm i -g pm2
 
 # Production stage
 FROM base

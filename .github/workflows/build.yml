@@ -60,4 +60,4 @@ jobs:
           key: ${{ secrets.KEY }}
           script: |
             cd ~/stacks
-            docker stack deploy -c boumboum-back.yml boumboum-back --with-registry-auth
+            docker stack deploy -c anki-back.yml anki-api --with-registry-auth
