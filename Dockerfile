@@ -43,8 +43,6 @@ COPY . .
 # Run the build script.
 RUN yarn run build
 
-# Install PM2
-RUN yarn global add pm2
 
 ################################################################################
 # Create a new stage to run the application with minimal runtime dependencies
@@ -64,7 +62,6 @@ COPY package.json .
 # the built application from the build stage into the image.
 COPY --from=deps /usr/src/app/node_modules ./node_modules
 COPY --from=build /usr/src/app/build ./build
-
 
 # Expose the port that the application listens on.
 EXPOSE 9000
