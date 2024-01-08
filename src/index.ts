@@ -55,6 +55,7 @@ async function seedDatabase() {
         _id: new mongoose.Types.ObjectId(seedSet.id),
         title: seedSet.title,
         description: seedSet.description,
+        image: seedSet.image,
         author: seedSet.author,
         private: seedSet.private,
         cards: seedSet.cards,
