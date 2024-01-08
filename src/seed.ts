@@ -1,3 +1,110 @@
+import mongoose from "mongoose";
+
+import Sets from "./models/set.model";
+import Cards from "./models/card.model";
+
+export async function seedDatabase() {
+  const dbSets = await Sets.find();
+  const cards = await Cards.find();
+
+  if (dbSets.length === 0) {
+    console.log("Seeding Sets...");
+
+    let count = 0;
+
+    setsData.forEach(async (seedSet) => {
+      count += 1;
+
+      const newSet = new Sets({
+        _id: new mongoose.Types.ObjectId(seedSet.id),
+        title: seedSet.title,
+        description: seedSet.description,
+        image: seedSet.image,
+        author: seedSet.author,
+        private: seedSet.private,
+        cards: seedSet.cards,
+      });
+
+      await newSet.save();
+    });
+
+    console.log(`${count} Sets Seeded`);
+  }
+
+  if (cards.length === 0) {
+    console.log("Seeding Cards...");
+
+    let count = 0;
+
+    cardsCapitals.forEach(async (seedCard) => {
+      count += 1;
+
+      const newCard = new Cards({
+        _id: new mongoose.Types.ObjectId(),
+        question: seedCard.question,
+        answer: seedCard.answer,
+        set: seedCard.set,
+      });
+
+      await newCard.save();
+    });
+
+    cardsProgramming.forEach(async (seedCard) => {
+      count += 1;
+
+      const newCard = new Cards({
+        _id: new mongoose.Types.ObjectId(),
+        question: seedCard.question,
+        answer: seedCard.answer,
+        set: seedCard.set,
+      });
+
+      await newCard.save();
+    });
+
+    cardsFamousLandmarks.forEach(async (seedCard) => {
+      count += 1;
+
+      const newCard = new Cards({
+        _id: new mongoose.Types.ObjectId(),
+        question: seedCard.question,
+        answer: seedCard.answer,
+        set: seedCard.set,
+      });
+
+      await newCard.save();
+    });
+
+    cardsArtHistory.forEach(async (seedCard) => {
+      count += 1;
+
+      const newCard = new Cards({
+        _id: new mongoose.Types.ObjectId(),
+        question: seedCard.question,
+        answer: seedCard.answer,
+        set: seedCard.set,
+      });
+
+      await newCard.save();
+    });
+
+    cardsAnimalKingdom.forEach(async (seedCard) => {
+      count += 1;
+
+      const newCard = new Cards({
+        _id: new mongoose.Types.ObjectId(),
+        question: seedCard.question,
+        answer: seedCard.answer,
+        set: seedCard.set,
+      });
+
+      await newCard.save();
+    });
+
+    console.log(`${count} Cards Seeded`);
+  }
+}
+
 export const setsData = [
   {
     id: "65971bf211b1482496d19395",
@@ -27,7 +134,7 @@ export const setsData = [
       "https://www.usnews.com/object/image/00000169-5e07-df95-a57d-7ec70b790000/19030830famouslandmarks-stock.jpg?update-time=1552318747438&size=responsive640",
     author: "Admin",
     private: false,
-    cards: 15,
+    cards: 10,
   },
   {
     id: "65971bf211b1482496d19399",
@@ -38,7 +145,7 @@ export const setsData = [
       "https://s.studiobinder.com/wp-content/uploads/2020/12/Art-History-Timeline-A-Guide-to-Western-Art-Movements-Featured.jpg",
     author: "Admin",
     private: false,
-    cards: 20,
+    cards: 10,
   },
   {
     id: "65971bf211b1482496d19400",
@@ -48,7 +155,7 @@ export const setsData = [
       "https://images.photowall.com/products/48086/jungle-lake-with-wild-animals-1.jpg?h=699&q=85",
     author: "Admin",
     private: false,
-    cards: 25,
+    cards: 10,
   },
 ];
 
