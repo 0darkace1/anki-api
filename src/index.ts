@@ -5,7 +5,14 @@ import mongoose from "mongoose";
 import Cards from "./models/card.model";
 import Sets from "./models/set.model";
 
-import { cardsCapitals, cardsProgramming, setsData } from "./seed";
+import {
+  cardsAnimalKingdom,
+  cardsArtHistory,
+  cardsCapitals,
+  cardsFamousLandmarks,
+  cardsProgramming,
+  setsData,
+} from "./seed";
 import setsRoutes from "./routes/sets.route";
 import cardsRoutes from "./routes/cards.route";
 import userRoutes from "./routes/user.route";
@@ -82,6 +89,39 @@ async function seedDatabase() {
     });
 
     cardsProgramming.forEach(async (seedCard) => {
+      const newCard = new Cards({
+        _id: new mongoose.Types.ObjectId(),
+        question: seedCard.question,
+        answer: seedCard.answer,
+        set: seedCard.set,
+      });
+
+      await newCard.save();
+    });
+
+    cardsFamousLandmarks.forEach(async (seedCard) => {
+      const newCard = new Cards({
+        _id: new mongoose.Types.ObjectId(),
+        question: seedCard.question,
+        answer: seedCard.answer,
+        set: seedCard.set,
+      });
+
+      await newCard.save();
+    });
+
+    cardsArtHistory.forEach(async (seedCard) => {
+      const newCard = new Cards({
+        _id: new mongoose.Types.ObjectId(),
+        question: seedCard.question,
+        answer: seedCard.answer,
+        set: seedCard.set,
+      });
+
+      await newCard.save();
+    });
+
+    cardsAnimalKingdom.forEach(async (seedCard) => {
       const newCard = new Cards({
         _id: new mongoose.Types.ObjectId(),
         question: seedCard.question,
