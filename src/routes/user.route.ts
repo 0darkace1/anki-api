@@ -16,13 +16,13 @@ const userRoutes = express.Router();
 // Get all users
 userRoutes.get("/", async (req: Request, res: Response) => {
   try {
-    console.log({ req: "GET /users", body: req.body });
+    console.log({ url: "GET /users", body: req.body });
 
     const users = await Users.find();
 
     return res.json(users);
   } catch (error) {
-    console.log(error);
+    console.error(error);
 
     return res.status(500).json({ message: "Internal Server Error" });
   }
@@ -33,13 +33,13 @@ userRoutes.get("/:userId", async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
 
-    console.log({ req: "GET /users/:userId", body: req.body });
+    console.log({ url: "GET /users/:userId", body: req.body });
 
     const user = await Users.findById(userId);
 
     return res.json(user);
   } catch (error) {
-    console.log(error);
+    console.error(error);
 
     return res.status(500).json({ message: "Internal Server Error" });
   }
@@ -50,7 +50,7 @@ userRoutes.post("/", async (req: Request, res: Response) => {
   try {
     const { name, photo, email, password } = req.body;
 
-    console.log({ req: "POST /users", body: req.body });
+    console.log({ url: "POST /users", body: req.body });
 
     const newUser = new Users({
       name,
@@ -63,7 +63,7 @@ userRoutes.post("/", async (req: Request, res: Response) => {
 
     return res.json(newUser);
   } catch (error) {
-    console.log(error);
+    console.error(error);
 
     return res.status(500).json({ message: "Internal Server Error" });
   }
@@ -75,7 +75,7 @@ userRoutes.patch("/:userId", async (req: Request, res: Response) => {
     const { userId } = req.params;
     const { name, photo, email, password } = req.body;
 
-    console.log({ req: "PATCH /users/:userId", body: req.body });
+    console.log({ url: "PATCH /users/:userId", body: req.body });
 
     const updatedUser = await Sets.findByIdAndUpdate(userId, {
       name,
@@ -86,7 +86,7 @@ userRoutes.patch("/:userId", async (req: Request, res: Response) => {
 
     return res.json(updatedUser);
   } catch (error) {
-    console.log(error);
+    console.error(error);
 
     return res.status(500).json({ message: "Internal Server Error" });
   }
@@ -97,7 +97,7 @@ userRoutes.delete("/:userId", async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
 
-    console.log({ req: "DELETE /users/:userId", body: req.body });
+    console.log({ url: "DELETE /users/:userId", body: req.body });
 
     const deletedUser = await Sets.findByIdAndDelete(userId);
 
@@ -110,7 +110,7 @@ userRoutes.delete("/:userId", async (req: Request, res: Response) => {
       message: "Unable to delete, user does not exist.",
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
 
     return res.status(500).json({ message: "Internal Server Error" });
   }
@@ -123,14 +123,14 @@ userRoutes.get("/:userId/sets", async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
 
-    console.log({ req: "GET /users/:userId/sets", body: req.body });
+    console.log({ url: "GET /users/:userId/sets", body: req.body });
 
     //   const userSets = await UserSets.find({ user: user });
     const userSets = await UserSets.find({ user: userId }).populate("set");
 
     res.json(userSets);
   } catch (error) {
-    console.log(error);
+    console.error(error);
 
     return res.status(500).json({ message: "Internal Server Error" });
   }
@@ -142,7 +142,7 @@ userRoutes.post("/:userId/sets", async (req: Request, res: Response) => {
     const { userId } = req.params;
     const { setId } = req.body;
 
-    console.log({ req: "POST /users/:userId/sets", body: req.body });
+    console.log({ url: "POST /users/:userId/sets", body: req.body });
 
     const exist = await UserSets.findOne({ user: userId, set: setId });
 
@@ -159,7 +159,7 @@ userRoutes.post("/:userId/sets", async (req: Request, res: Response) => {
 
     res.json(userSet);
   } catch (error) {
-    console.log(error);
+    console.error(error);
 
     return res.status(500).json({ message: "Internal Server Error" });
   }
@@ -172,7 +172,7 @@ userRoutes.delete(
     try {
       const { userId, setId } = req.params;
 
-      console.log({ req: "DELETE /users/:userId/sets/:setId", body: req.body });
+      console.log({ url: "DELETE /users/:userId/sets/:setId", body: req.body });
 
       const deletedFavorite = await UserSets.findOneAndDelete({
         user: userId,
@@ -201,7 +201,7 @@ userRoutes.get("/:userId/learnings", async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
 
-    console.log({ req: "GET /users/:userId/learnings", body: req.body });
+    console.log({ url: "GET /users/:userId/learnings", body: req.body });
 
     const userLearnings = await Learnings.find({ user: userId }).populate(
       "set"
@@ -209,7 +209,7 @@ userRoutes.get("/:userId/learnings", async (req: Request, res: Response) => {
 
     return res.json(userLearnings);
   } catch (error) {
-    console.log(error);
+    console.error(error);
 
     return res.status(500).json({ message: "Internal Server Error" });
   }

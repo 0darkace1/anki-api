@@ -13,6 +13,8 @@ const adminRoutes = express.Router();
 
 adminRoutes.get("/init", async (req: Request, res: Response) => {
   try {
+    console.log({ url: "GET /auth/init", body: req.body });
+
     await Cards.collection.drop();
     await Learnings.collection.drop();
     await Sets.collection.drop();
@@ -22,7 +24,7 @@ adminRoutes.get("/init", async (req: Request, res: Response) => {
 
     return res.json({ message: "Successfully initialized!" });
   } catch (error) {
-    console.log(error);
+    console.error(error);
 
     return res.status(500).json({ message: "Internal Server Error" });
   }

@@ -31,7 +31,7 @@ authRoutes.post("/register", async (req: Request, res: Response) => {
         .json({ error: true, message: error.details[0].message });
     }
 
-    console.log({ req: "POST /register", body: req.body });
+    console.log({ url: "POST /register", body: req.body });
 
     const user = await Users.findOne({ email: req.body.email });
     if (user) {
@@ -70,7 +70,7 @@ authRoutes.post("/login", async (req: Request, res: Response) => {
         .json({ error: true, message: error.details[0].message });
     }
 
-    console.log({ req: "POST /login", body: req.body });
+    console.log({ url: "POST /login", body: req.body });
 
     const user = await Users.findOne({ email: req.body.email });
     const verifiedPassword = await verifyPassword(
@@ -111,7 +111,7 @@ authRoutes.post("/refresh", async (req: Request, res: Response) => {
       .json({ error: true, message: error.details[0].message });
   }
 
-  console.log({ req: "POST /refresh", body: req.body });
+  console.log({ url: "POST /refresh", body: req.body });
 
   verifyRefreshToken(req.body.refreshToken)
     .then((tokenDetails: any) => {
@@ -140,7 +140,7 @@ authRoutes.post("/logout", async (req: Request, res: Response) => {
         .json({ error: true, message: error.details[0].message });
     }
 
-    console.log({ req: "POST /logout", body: req.body });
+    console.log({ url: "POST /logout", body: req.body });
 
     const userToken = await Tokens.findOne({ token: req.params.refreshToken });
     if (!userToken) {

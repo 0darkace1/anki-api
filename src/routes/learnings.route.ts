@@ -10,13 +10,13 @@ const learningsRoutes = express.Router();
 // Get all learnings
 learningsRoutes.get("/", async (req: Request, res: Response) => {
   try {
-    console.log({ req: "GET /learnings", body: req.body });
+    console.log({ url: "GET /learnings", body: req.body });
 
     const learnings = await Learnings.find();
 
     return res.json(learnings);
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 });
@@ -26,13 +26,13 @@ learningsRoutes.get("/:learningId", async (req: Request, res: Response) => {
   try {
     const { learningId } = req.params;
 
-    console.log({ req: "GET /learnings/:cardId", body: req.body });
+    console.log({ url: "GET /learnings/:cardId", body: req.body });
 
     const learning = await Learnings.findById(learningId).populate("set");
 
     return res.json(learning);
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 });
@@ -42,7 +42,7 @@ learningsRoutes.post("/", async (req: Request, res: Response) => {
   try {
     const { user, cards_total, cards_wrong, cards_success, set } = req.body;
 
-    console.log({ req: "POST /learnings", body: req.body });
+    console.log({ url: "POST /learnings", body: req.body });
 
     const obj = {
       user,
@@ -59,7 +59,7 @@ learningsRoutes.post("/", async (req: Request, res: Response) => {
 
     return res.json(newLearning);
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 });
@@ -71,7 +71,7 @@ learningsRoutes.patch("/:learningId", async (req: Request, res: Response) => {
     const { user, score, cards_total, cards_wrong, cards_success, set } =
       req.body;
 
-    console.log({ req: "POST /learnings/:cardId", body: req.body });
+    console.log({ url: "POST /learnings/:cardId", body: req.body });
 
     const updatedLearning = await Learnings.findByIdAndUpdate(learningId, {
       user,
@@ -84,7 +84,7 @@ learningsRoutes.patch("/:learningId", async (req: Request, res: Response) => {
 
     return res.json(updatedLearning);
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 });
@@ -94,7 +94,7 @@ learningsRoutes.delete("/:learningId", async (req: Request, res: Response) => {
   try {
     const { learningId } = req.params;
 
-    console.log({ req: "DELETE /learnings/:cardId", body: req.body });
+    console.log({ url: "DELETE /learnings/:cardId", body: req.body });
 
     const deletedLearning = await Learnings.findByIdAndDelete(learningId);
 
@@ -107,7 +107,7 @@ learningsRoutes.delete("/:learningId", async (req: Request, res: Response) => {
       message: "Unable to delete, this learning does not exist.",
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 });
