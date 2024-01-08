@@ -13,6 +13,8 @@ const setsRoutes = express.Router();
 // Get all sets
 setsRoutes.get("/", async (req: Request, res: Response) => {
   try {
+    console.log({ req: "GET /sets", body: req.body });
+
     const sets = await Sets.find({ private: false });
 
     return res.json(sets);
@@ -27,6 +29,9 @@ setsRoutes.get("/", async (req: Request, res: Response) => {
 setsRoutes.get("/:setId", async (req: Request, res: Response) => {
   try {
     const { setId } = req.params;
+
+    console.log({ req: "GET /sets/:cardId", body: req.body });
+
     const set = await Sets.findById(setId);
 
     return res.json(set);
@@ -41,6 +46,8 @@ setsRoutes.get("/:setId", async (req: Request, res: Response) => {
 setsRoutes.post("/", async (req: Request, res: Response) => {
   try {
     const { title, description, image, private: isPrivate, author } = req.body;
+
+    console.log({ req: "POST /sets", body: req.body });
 
     const newSet = new Sets({
       title,
@@ -66,6 +73,8 @@ setsRoutes.patch("/:setId", async (req: Request, res: Response) => {
     const { setId } = req.params;
     const { title, description, image, private: isPrivate, creator } = req.body;
 
+    console.log({ req: "PATCH /sets/:setId", body: req.body });
+
     const updatedSet = await Sets.findByIdAndUpdate(setId, {
       title,
       description,
@@ -86,6 +95,8 @@ setsRoutes.patch("/:setId", async (req: Request, res: Response) => {
 setsRoutes.delete("/:setId", async (req: Request, res: Response) => {
   try {
     const { setId } = req.params;
+
+    console.log({ req: "DELETE /sets/:setId", body: req.body });
 
     const deletedSet = await Sets.findByIdAndDelete(setId);
 
@@ -119,6 +130,8 @@ setsRoutes.get("/:setId/cards", async (req: Request, res: Response) => {
   try {
     const { setId } = req.params;
 
+    console.log({ req: "GET /sets/cards", body: req.body });
+
     const cards = await Cards.find({ set: setId });
 
     return res.json(cards);
@@ -135,8 +148,10 @@ setsRoutes.get("/:setId/learn", async (req: Request, res: Response) => {
     const { setId } = req.params;
     const { limit = 5 } = req.query;
 
-    console.log({ setId });
-    console.log({ limit });
+    console.log({ req: "GET /sets/learn", body: req.body });
+
+    // console.log({ setId });
+    // console.log({ limit });
 
     const cards = await Cards.find({ set: setId });
 

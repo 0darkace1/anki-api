@@ -11,6 +11,8 @@ const cardsRoutes = express.Router();
 // Get all cards
 cardsRoutes.get("/", async (req: Request, res: Response) => {
   try {
+    console.log({ req: "GET /cards", body: req.body });
+
     const cards = await Cards.find();
 
     return res.json(cards);
@@ -26,6 +28,8 @@ cardsRoutes.get("/:cardId", async (req: Request, res: Response) => {
   try {
     const { cardId } = req.params;
 
+    console.log({ req: "GET /cards/:cardId", body: req.body });
+
     const card = await Cards.findById(cardId);
 
     return res.json(card);
@@ -40,6 +44,8 @@ cardsRoutes.get("/:cardId", async (req: Request, res: Response) => {
 cardsRoutes.post("/", async (req: Request, res: Response) => {
   try {
     const { question, answer, set } = req.body;
+
+    console.log({ req: "POST /cards", body: req.body });
 
     const newCard = new Cards({
       question,
@@ -69,6 +75,8 @@ cardsRoutes.patch("/:cardId", async (req: Request, res: Response) => {
     const { cardId } = req.params;
     const { question, answer, set } = req.body;
 
+    console.log({ req: "PATCH /cards/:cardId", body: req.body });
+
     const updatedCard = await Cards.findByIdAndUpdate(cardId, {
       question,
       answer,
@@ -87,6 +95,8 @@ cardsRoutes.patch("/:cardId", async (req: Request, res: Response) => {
 cardsRoutes.delete("/:cardId", async (req: Request, res: Response) => {
   try {
     const { cardId } = req.params;
+
+    console.log({ req: "DELETE /cards/:cardId", body: req.body });
 
     const deletedCard: any = await Cards.findByIdAndDelete(cardId);
 

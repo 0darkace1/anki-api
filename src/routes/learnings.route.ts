@@ -10,6 +10,8 @@ const learningsRoutes = express.Router();
 // Get all learnings
 learningsRoutes.get("/", async (req: Request, res: Response) => {
   try {
+    console.log({ req: "GET /learnings", body: req.body });
+
     const learnings = await Learnings.find();
 
     return res.json(learnings);
@@ -24,6 +26,8 @@ learningsRoutes.get("/:learningId", async (req: Request, res: Response) => {
   try {
     const { learningId } = req.params;
 
+    console.log({ req: "GET /learnings/:cardId", body: req.body });
+
     const learning = await Learnings.findById(learningId).populate("set");
 
     return res.json(learning);
@@ -37,6 +41,8 @@ learningsRoutes.get("/:learningId", async (req: Request, res: Response) => {
 learningsRoutes.post("/", async (req: Request, res: Response) => {
   try {
     const { user, cards_total, cards_wrong, cards_success, set } = req.body;
+
+    console.log({ req: "POST /learnings", body: req.body });
 
     const obj = {
       user,
@@ -65,6 +71,8 @@ learningsRoutes.patch("/:learningId", async (req: Request, res: Response) => {
     const { user, score, cards_total, cards_wrong, cards_success, set } =
       req.body;
 
+    console.log({ req: "POST /learnings/:cardId", body: req.body });
+
     const updatedLearning = await Learnings.findByIdAndUpdate(learningId, {
       user,
       score,
@@ -85,6 +93,8 @@ learningsRoutes.patch("/:learningId", async (req: Request, res: Response) => {
 learningsRoutes.delete("/:learningId", async (req: Request, res: Response) => {
   try {
     const { learningId } = req.params;
+
+    console.log({ req: "DELETE /learnings/:cardId", body: req.body });
 
     const deletedLearning = await Learnings.findByIdAndDelete(learningId);
 
