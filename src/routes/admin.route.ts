@@ -13,7 +13,7 @@ const adminRoutes = express.Router();
 
 adminRoutes.get("/init", async (req: Request, res: Response) => {
   try {
-    console.log({ url: "GET /auth/init", body: req.body });
+    console.log({ url: "GET /admin/init", body: req.body });
 
     await Cards.collection.drop();
     await Learnings.collection.drop();
