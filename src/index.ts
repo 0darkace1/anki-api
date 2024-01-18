@@ -1,44 +1,39 @@
-import express, { Request, Response } from "express";
-import dotenv from "dotenv";
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
-import { seedDatabase } from "./seed";
+import app from './app';
+import config from '@/config/config';
+import logger from '@/config/logger';
 
-import adminRoutes from "./routes/admin.route";
-import userRoutes from "./routes/user.route";
-import learningsRoutes from "./routes/learnings.route";
-import setsRoutes from "./routes/sets.route";
-import cardsRoutes from "./routes/cards.route";
-
-dotenv.config();
-
-const PORT = process.env.PORT || 9000;
-const app = express();
-
-app.use(express.json({ limit: "50mb" }));
-
-app.get("/", async (req: Request, res: Response) => {
-  return res.status(200).json({ message: "ANKI CLONE API - v0.2" });
+let server: any;
+mongoose.connect(config.mongoose.url, config.mongoose.options).then(() => {
+  logger.info('Connected to MongoDB');
+  server = app.listen(config.port, () => {
+    logger.info(`API Listening on: http://localhost:${config.port}/v1`);
+  });
 });
 
-app.use("/admin", adminRoutes);
+const exitHandler = () => {
+  if (server) {
+    server.close(() => {
+      logger.info('Server closed');
+      process.exit(1);
+    });
+  } else {
+    process.exit(1);
+  }
+};
 
-app.use("/user", userRoutes);
-app.use("/learnings", learningsRoutes);
-app.use("/sets", setsRoutes);
-app.use("/cards", cardsRoutes);
+const unexpectedErrorHandler = (error: any) => {
+  logger.error(error);
+  exitHandler();
+};
 
-app.listen(PORT, () => {
-  mongoose
-    .connect(
-      process.env.MONGO_URL || "mongodb://anki_database:27017/anki-clone"
-    )
-    .then(() => {
-      console.log("Successfully connected to MongoDB.");
+process.on('uncaughtException', unexpectedErrorHandler);
+process.on('unhandledRejection', unexpectedErrorHandler);
 
-      seedDatabase();
-    })
-    .catch((err) => console.error("MongoDB connection error", err));
-
-  console.log(`Listening on: http://localhost:${PORT}`);
+process.on('SIGTERM', () => {
+  logger.info('SIGTERM received');
+  if (server) {
+    server.close();
+  }
 });

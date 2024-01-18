@@ -1,5 +1,5 @@
 import mongoose, { Model } from "mongoose";
-import toJSON from "./plugins/toJSON.plugin";
+import { paginate, toJSON } from "./plugins";
 
 interface ILearning {
   user: string;
@@ -7,7 +7,7 @@ interface ILearning {
   cards_total: number;
   cards_wrong: number;
   cards_success: number;
-  set: mongoose.Schema.Types.ObjectId;
+  topic: mongoose.Schema.Types.ObjectId;
 }
 
 const learningSchema = new mongoose.Schema<ILearning>(
@@ -17,9 +17,9 @@ const learningSchema = new mongoose.Schema<ILearning>(
     cards_total: { type: Number, required: true },
     cards_wrong: { type: Number, required: true },
     cards_success: { type: Number, required: true },
-    set: {
+    topic: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Sets",
+      ref: "Topics",
     },
   },
   {
@@ -28,10 +28,11 @@ const learningSchema = new mongoose.Schema<ILearning>(
 );
 
 learningSchema.plugin(toJSON);
+learningSchema.plugin(paginate);
 
-const Learnings: Model<ILearning> = mongoose.model<ILearning>(
-  "Learnings",
+const Learning: Model<ILearning> = mongoose.model<ILearning>(
+  "Learning",
   learningSchema
 );
 
-export default Learnings;
+export default Learning;

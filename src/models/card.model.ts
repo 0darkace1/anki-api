@@ -1,10 +1,10 @@
 import mongoose, { Model } from "mongoose";
-import toJSON from "./plugins/toJSON.plugin";
+import { paginate, toJSON } from "./plugins";
 
 interface ICard {
   question: string;
   answer: string;
-  set: mongoose.Schema.Types.ObjectId;
+  topic: mongoose.Schema.Types.ObjectId;
   image?: string;
 }
 
@@ -13,9 +13,9 @@ const cardSchema = new mongoose.Schema<ICard>(
     question: { type: String, required: true },
     answer: { type: String, required: true },
     image: { type: String, required: false, default: "" },
-    set: {
+    topic: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Sets",
+      ref: "Topic",
     },
   },
   {
@@ -24,7 +24,8 @@ const cardSchema = new mongoose.Schema<ICard>(
 );
 
 cardSchema.plugin(toJSON);
+cardSchema.plugin(paginate);
 
-const Cards: Model<ICard> = mongoose.model<ICard>("Cards", cardSchema);
+const Card: Model<ICard> = mongoose.model<ICard>("Card", cardSchema);
 
-export default Cards;
+export default Card;

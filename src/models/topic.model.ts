@@ -1,7 +1,7 @@
 import mongoose, { Model } from "mongoose";
 import toJSON from "./plugins/toJSON.plugin";
 
-interface ISet {
+interface ITopic {
   title: string;
   description: string;
   author: string;
@@ -10,7 +10,7 @@ interface ISet {
   image?: string;
 }
 
-const setSchema = new mongoose.Schema<ISet>(
+const topicSchema = new mongoose.Schema<ITopic>(
   {
     title: { type: String, required: true },
     description: { type: String, required: true },
@@ -24,8 +24,8 @@ const setSchema = new mongoose.Schema<ISet>(
   }
 );
 
-setSchema.plugin(toJSON);
+topicSchema.plugin(toJSON);
 
-const Sets: Model<ISet> = mongoose.model<ISet>("Sets", setSchema);
+const Topic: Model<ITopic> = mongoose.model<ITopic>("Topic", topicSchema);
 
-export default Sets;
+export default Topic;

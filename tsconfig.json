@@ -9,6 +9,10 @@
     "allowSyntheticDefaultImports": true,
     "rootDir": "src/",
     "strict": true,
-    "lib": ["esnext"]
-  }
+    "lib": ["esnext"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+    },
+  },
 }

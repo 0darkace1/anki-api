@@ -3,12 +3,12 @@
     {
       "name": "api",
       "script": "./build/index.js",
-      "merge_logs": true,
-      "max_restarts": 20,
       "instances": 4,
-      "max_memory_restart": "200M",
+      "autorestart": true,
+      "max_restarts": 20,
+      "watch": false,
+      "time": true,
       "env": {
-        "PORT": 9000,
         "NODE_ENV": "production"
       }
     }

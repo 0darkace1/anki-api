@@ -1,24 +1,66 @@
 import mongoose, { Model } from "mongoose";
+
 import toJSON from "./plugins/toJSON.plugin";
+import tokenTypes from "../config/tokens";
 
 interface IToken {
-  userId: mongoose.Schema.Types.ObjectId;
   token: string;
-  createdAt: mongoose.Schema.Types.Date;
+  user: mongoose.Schema.Types.ObjectId;
+  type:
+    | typeof tokenTypes.REFRESH
+    | typeof tokenTypes.REFRESH
+    | typeof tokenTypes.REFRESH;
+  expires: Date;
+  userAgent?: string | null;
+  blacklisted: boolean;
 }
 
-const tokenSchema = new mongoose.Schema<IToken>({
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    ref: "Users",
+const tokenSchema = new mongoose.Schema<IToken>(
+  {
+    token: {
+      type: String,
+      required: true,
+      index: true,
+    },
+    user: {
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    type: {
+      type: String,
+      enum: [
+        tokenTypes.REFRESH,
+        tokenTypes.RESET_PASSWORD,
+        tokenTypes.VERIFY_EMAIL,
+      ],
+      required: true,
+    },
+    expires: {
+      type: Date,
+      required: true,
+    },
+    userAgent: {
+      type: String,
+      required: false,
+      default: null,
+    },
+    blacklisted: {
+      type: Boolean,
+      default: false,
+    },
   },
-  token: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now, expires: 30 * 86400 }, // 30 Days
-});
+  {
+    timestamps: true,
+  }
+);
 
+// add plugin that converts mongoose to json
 tokenSchema.plugin(toJSON);
 
-const Tokens: Model<IToken> = mongoose.model<IToken>("Tokens", tokenSchema);
+/**
+ * @typedef Token
+ */
+const Token: Model<IToken> = mongoose.model<IToken>("Token", tokenSchema);
 
-export default Tokens;
+export default Token;

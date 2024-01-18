@@ -1,29 +1,61 @@
 import Joi from "joi";
-import passwordComplexity from "joi-password-complexity";
 
-export const registerBodyValidation = (body: any) => {
-  const schema = Joi.object({
-    userName: Joi.string().required().label("User Name"),
-    email: Joi.string().email().required().label("Email"),
-    password: passwordComplexity().required().label("Password"),
-  });
+import { password } from "./custom.validation";
 
-  return schema.validate(body);
+const register = {
+  body: Joi.object().keys({
+    email: Joi.string().required().email(),
+    password: Joi.string().required().custom(password),
+    name: Joi.string().required(),
+  }),
 };
 
-export const loginBodyValidation = (body: any) => {
-  const schema = Joi.object({
-    email: Joi.string().email().required().label("Email"),
-    password: Joi.string().required().label("Password"),
-  });
-
-  return schema.validate(body);
+const login = {
+  body: Joi.object().keys({
+    email: Joi.string().required(),
+    password: Joi.string().required(),
+  }),
 };
 
-export const refreshBodyValidation = (body: any) => {
-  const schema = Joi.object({
-    refreshToken: Joi.string().required().label("Refresh Token"),
-  });
+const logout = {
+  body: Joi.object().keys({
+    refreshToken: Joi.string().required(),
+  }),
+};
 
-  return schema.validate(body);
+const refreshTokens = {
+  body: Joi.object().keys({
+    refreshToken: Joi.string().required(),
+  }),
+};
+
+const forgotPassword = {
+  body: Joi.object().keys({
+    email: Joi.string().email().required(),
+  }),
+};
+
+const resetPassword = {
+  query: Joi.object().keys({
+    token: Joi.string().required(),
+  }),
+  body: Joi.object().keys({
+    password: Joi.string().required().custom(password),
+  }),
+};
+
+const verifyEmail = {
+  query: Joi.object().keys({
+    token: Joi.string().required(),
+  }),
+};
+
+export default {
+  register,
+  login,
+  logout,
+  refreshTokens,
+  forgotPassword,
+  resetPassword,
+  verifyEmail,
 };

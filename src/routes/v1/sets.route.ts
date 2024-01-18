@@ -1,19 +1,19 @@
-import express, { Request, Response } from "express";
+import express, { Request, Response } from 'express';
 
-import Sets from "../models/set.model";
-import Cards from "../models/card.model";
-import UserSets from "../models/userSets.model";
-import Learnings from "../models/learning.model";
+import Sets from '@/models/topic.model';
+import Cards from '@/models/card.model';
+import UserSets from '@/models/userTopic.model';
+import Learnings from '@/models/learning.model';
 
-const setsRoutes = express.Router();
+const setsRouter = express.Router();
 
 // TODO: VALIDATE ALL INCOMING DATA
 // TODO: VERIFY IF CONNECTED & USER PERMISSIONS
 
 // Get all sets
-setsRoutes.get("/", async (req: Request, res: Response) => {
+setsRouter.get('/', async (req: Request, res: Response) => {
   try {
-    console.log({ url: "GET /sets", body: req.body });
+    console.log({ url: 'GET /sets', body: req.body });
 
     const sets = await Sets.find({ private: false });
 
@@ -21,33 +21,31 @@ setsRoutes.get("/", async (req: Request, res: Response) => {
   } catch (error) {
     console.error(error);
 
-    return res.status(500).json({ message: "Internal Server Error" });
+    return res.status(500).json({ message: 'Internal Server Error' });
   }
 });
 
 // Get a single set
-setsRoutes.get("/:setId", async (req: Request, res: Response) => {
+setsRouter.get('/:setId', async (req: Request, res: Response) => {
   try {
     const { setId } = req.params;
 
-    console.log({ url: "GET /sets/:cardId", body: req.body });
+    console.log({ url: 'GET /sets/:cardId', body: req.body });
 
     const set = await Sets.findById(setId);
 
     return res.json(set);
   } catch (err) {
-    return res
-      .status(500)
-      .json({ error: true, message: "Internal error occurred" });
+    return res.status(500).json({ error: true, message: 'Internal error occurred' });
   }
 });
 
 // Create a set
-setsRoutes.post("/", async (req: Request, res: Response) => {
+setsRouter.post('/', async (req: Request, res: Response) => {
   try {
     const { title, description, image, private: isPrivate, author } = req.body;
 
-    console.log({ url: "POST /sets", body: req.body });
+    console.log({ url: 'POST /sets', body: req.body });
 
     const newSet = new Sets({
       title,
@@ -63,17 +61,17 @@ setsRoutes.post("/", async (req: Request, res: Response) => {
   } catch (error) {
     console.error(error);
 
-    return res.status(500).json({ message: "Internal Server Error" });
+    return res.status(500).json({ message: 'Internal Server Error' });
   }
 });
 
 // Update a set
-setsRoutes.patch("/:setId", async (req: Request, res: Response) => {
+setsRouter.patch('/:setId', async (req: Request, res: Response) => {
   try {
     const { setId } = req.params;
     const { title, description, image, private: isPrivate, creator } = req.body;
 
-    console.log({ url: "PATCH /sets/:setId", body: req.body });
+    console.log({ url: 'PATCH /sets/:setId', body: req.body });
 
     const updatedSet = await Sets.findByIdAndUpdate(setId, {
       title,
@@ -87,16 +85,16 @@ setsRoutes.patch("/:setId", async (req: Request, res: Response) => {
   } catch (error) {
     console.error(error);
 
-    return res.status(500).json({ message: "Internal Server Error" });
+    return res.status(500).json({ message: 'Internal Server Error' });
   }
 });
 
 // Delete a set by id
-setsRoutes.delete("/:setId", async (req: Request, res: Response) => {
+setsRouter.delete('/:setId', async (req: Request, res: Response) => {
   try {
     const { setId } = req.params;
 
-    console.log({ url: "DELETE /sets/:setId", body: req.body });
+    console.log({ url: 'DELETE /sets/:setId', body: req.body });
 
     const deletedSet = await Sets.findByIdAndDelete(setId);
 
@@ -115,22 +113,22 @@ setsRoutes.delete("/:setId", async (req: Request, res: Response) => {
     }
 
     return res.status(404).json({
-      error: "Not Found",
-      message: "Unable to delete, set does not exist.",
+      error: 'Not Found',
+      message: 'Unable to delete, set does not exist.',
     });
   } catch (error) {
     console.error(error);
 
-    return res.status(500).json({ message: "Internal Server Error" });
+    return res.status(500).json({ message: 'Internal Server Error' });
   }
 });
 
 // Get all cards for given set
-setsRoutes.get("/:setId/cards", async (req: Request, res: Response) => {
+setsRouter.get('/:setId/cards', async (req: Request, res: Response) => {
   try {
     const { setId } = req.params;
 
-    console.log({ url: "GET /sets/cards", body: req.body });
+    console.log({ url: 'GET /sets/cards', body: req.body });
 
     const cards = await Cards.find({ set: setId });
 
@@ -138,17 +136,17 @@ setsRoutes.get("/:setId/cards", async (req: Request, res: Response) => {
   } catch (error) {
     console.error(error);
 
-    return res.status(500).json({ message: "Internal Server Error" });
+    return res.status(500).json({ message: 'Internal Server Error' });
   }
 });
 
 // Learn a specific number of cards for given set
-setsRoutes.get("/:setId/learn", async (req: Request, res: Response) => {
+setsRouter.get('/:setId/learn', async (req: Request, res: Response) => {
   try {
     const { setId } = req.params;
     const { limit = 5 } = req.query;
 
-    console.log({ url: "GET /sets/learn", body: req.body });
+    console.log({ url: 'GET /sets/learn', body: req.body });
 
     // console.log({ setId });
     // console.log({ limit });
@@ -169,8 +167,8 @@ setsRoutes.get("/:setId/learn", async (req: Request, res: Response) => {
   } catch (error) {
     console.error(error);
 
-    return res.status(500).json({ message: "Internal Server Error" });
+    return res.status(500).json({ message: 'Internal Server Error' });
   }
 });
 
-export default setsRoutes;
+export default setsRouter;
